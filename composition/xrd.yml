@@ -25,6 +25,10 @@ spec:
             port:
               description: The port the app listens on.
               type: integer
+            replicas:
+              description: Desired number of app replicas.
+              type: integer
+              minimum: 0
           required:
           - image
           - port

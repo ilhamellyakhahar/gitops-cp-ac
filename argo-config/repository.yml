@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: repo-apps-lab
+  namespace: argocd
+  annotations:
+    managed-by: argocd.argoproj.io
+  labels:
+    argocd.argoproj.io/secret-type: repository
+data:
+  name: base64
+  password: base64
+  project: base64
+  type: base64
+  url: base64
+  username: base64
+type: Opaque
