@@ -4,3 +4,18 @@ metadata:
   name: app-lab
   namespace: argocd
 spec:
+  project: lab
+  source:
+    repoURL: https://github.com/ilhamellyakhahar/gitops-cp-ac.git
+    path: composition/apps
+    targetRevision: HEAD
+  destination:
+    server: https://nest-cluster-ak0v0b54.hcp.indonesiacentral.azmk8s.io:443
+    namespace: apps-lab
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+      enabled: true
+    syncOptions:
+      - CreateNamespace=true
