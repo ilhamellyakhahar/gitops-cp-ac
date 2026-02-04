@@ -2,7 +2,7 @@ apiVersion: nest.crossplane.io/v1
 kind: App
 metadata:
   name: my-app
-  namespace: default
+  namespace: apps-lab
 spec:
   image: nginx
   port: 80
