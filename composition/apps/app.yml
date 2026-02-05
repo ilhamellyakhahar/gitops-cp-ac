@@ -6,4 +6,4 @@ metadata:
 spec:
   image: nginx
   port: 80
-  replicas: 0
+  replicas: 1
