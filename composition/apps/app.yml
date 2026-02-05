@@ -8,4 +8,4 @@ spec:
   port: 80
   minReplicas: 1
   maxReplicas: 3
-  utilization: 70
+  utilization: 2
