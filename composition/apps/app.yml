@@ -6,6 +6,7 @@ metadata:
 spec:
   image: nginx
   port: 80
+  replicas: 1
   minReplicas: 1
   maxReplicas: 3
   utilization: 2
