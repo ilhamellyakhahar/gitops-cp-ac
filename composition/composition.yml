@@ -131,3 +131,12 @@ spec:
         - type: FromCompositeFieldPath
           fromFieldPath: spec.utilization
           toFieldPath: spec.metrics[1].resource.target.averageUtilization
+        readinessChecks:
+        - type: MatchCondition
+          matchCondition:
+            type: ScalingActive
+            status: "True"
+        - type: MatchCondition
+          matchCondition:
+            type: AbleToScale
+            status: "True"
