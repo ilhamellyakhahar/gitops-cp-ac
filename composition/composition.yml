@@ -56,6 +56,9 @@ spec:
         - type: FromCompositeFieldPath
           fromFieldPath: spec.port
           toFieldPath: spec.template.spec.containers[0].ports[0].containerPort
+        - type: FromCompositeFieldPath
+          fromFieldPath: spec.minReplicas
+          toFieldPath: spec.replicas
         - type: ToCompositeFieldPath
           fromFieldPath: status.availableReplicas
           toFieldPath: status.replicas
