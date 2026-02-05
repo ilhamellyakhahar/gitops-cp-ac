@@ -30,6 +30,9 @@ spec:
         patches:
         - type: FromCompositeFieldPath
           fromFieldPath: metadata.name
+          toFieldPath: metadata.name
+        - type: FromCompositeFieldPath
+          fromFieldPath: metadata.name
           toFieldPath: metadata.labels[nest.crossplane.io/app]
         - type: FromCompositeFieldPath
           fromFieldPath: metadata.name
@@ -43,9 +46,6 @@ spec:
         - type: FromCompositeFieldPath
           fromFieldPath: spec.port
           toFieldPath: spec.template.spec.containers[0].ports[0].containerPort
-        - type: FromCompositeFieldPath
-          fromFieldPath: spec.replicas
-          toFieldPath: spec.replicas
         - type: ToCompositeFieldPath
           fromFieldPath: status.availableReplicas
           toFieldPath: status.replicas
@@ -79,3 +79,46 @@ spec:
         readinessChecks:
         - type: NonEmpty
           fieldPath: spec.clusterIP
+      - name: hpa
+        base:
+          apiVersion: autoscaling/v2
+          kind: HorizontalPodAutoscaler
+          spec:
+            minReplicas: 1
+            maxReplicas: 3
+            scaleTargetRef:
+              apiVersion: apps/v1
+              kind: Deployment
+              name: app
+            metrics:
+            - type: Resource
+              resource:
+                name: cpu
+                target:
+                  type: Utilization
+                  averageUtilization: 70
+            - type: Resource
+              resource:
+                name: memory
+                target:
+                  type: Utilization
+                  averageUtilization: 70
+        patches:
+        - type: FromCompositeFieldPath
+          fromFieldPath: metadata.name
+          toFieldPath: metadata.labels[nest.crossplane.io/app]
+        - type: FromCompositeFieldPath
+          fromFieldPath: metadata.name
+          toFieldPath: spec.scaleTargetRef.name
+        - type: FromCompositeFieldPath
+          fromFieldPath: spec.minReplicas
+          toFieldPath: spec.minReplicas
+        - type: FromCompositeFieldPath
+          fromFieldPath: spec.maxReplicas
+          toFieldPath: spec.maxReplicas
+        - type: FromCompositeFieldPath
+          fromFieldPath: spec.utilization
+          toFieldPath: spec.metrics[0].resource.target.averageUtilization
+        - type: FromCompositeFieldPath
+          fromFieldPath: spec.utilization
+          toFieldPath: spec.metrics[1].resource.target.averageUtilization

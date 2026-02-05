@@ -25,10 +25,19 @@ spec:
             port:
               description: The port the app listens on.
               type: integer
-            replicas:
-              description: Desired number of app replicas.
+            minReplicas:
+              description: Minimum number of replicas for HPA.
               type: integer
-              minimum: 0
+              minimum: 1
+            maxReplicas:
+              description: Maximum number of replicas for HPA.
+              type: integer
+              minimum: 1
+            utilization:
+              description: Target average utilization percentage used for both CPU and memory metrics.
+              type: integer
+              minimum: 1
+              maximum: 100
           required:
           - image
           - port
