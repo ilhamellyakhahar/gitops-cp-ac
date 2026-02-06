@@ -38,6 +38,20 @@ spec:
               type: integer
               minimum: 1
               maximum: 100
+            host:
+              description: Optional hostname for Ingress routing.
+              type: string
+            tlsSecretName:
+              description: Secret name to store TLS certificate issued by cert-manager.
+              type: string
+            clusterIssuer:
+              description: cert-manager ClusterIssuer name to use for certificate issuance.
+              type: string
+              default: letsencrypt-development
+            ingressClassName:
+              description: Optional Ingress class name (e.g., nginx).
+              type: string
+              default: nginx
           required:
           - image
           - port
