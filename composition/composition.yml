@@ -186,7 +186,9 @@ spec:
           toFieldPath: spec.tls[0].secretName
           transforms:
           - type: string
-            fmt: "%s-tls"
+            string:
+              type: Format
+              fmt: "%s-tls"
         - type: FromCompositeFieldPath
           fromFieldPath: spec.host
           toFieldPath: spec.rules[0].host
