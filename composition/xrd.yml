@@ -52,6 +52,10 @@ spec:
               description: Optional Ingress class name (e.g., nginx).
               type: string
               default: nginx
+            enableIngress:
+              description: Enable composing an Ingress resource.
+              type: boolean
+              default: false
           required:
           - image
           - port

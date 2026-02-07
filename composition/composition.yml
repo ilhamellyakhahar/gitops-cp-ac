@@ -8,7 +8,7 @@ spec:
     kind: App
   mode: Pipeline
   pipeline:
-  - step: create-deployment-and-service
+  - step: create-deployment-service-hpa-ingress
     functionRef:
       name: crossplane-contrib-function-patch-and-transform
     input:
@@ -70,7 +70,7 @@ spec:
           spec:
             ports:
             - protocol: TCP
-              port: 8080
+              port: 80
               targetPort: 80
         patches:
         - type: FromCompositeFieldPath
@@ -151,11 +151,11 @@ spec:
             annotations:
               nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
               nginx.ingress.kubernetes.io/ssl-passthrough: "true"
-              cert-manager.io/cluster-issuer: letsencrypt-development
           spec:
             ingressClassName: nginx
             rules:
-            - http:
+            - host: example.com
+              http:
                 paths:
                 - path: "/"
                   pathType: Prefix
@@ -164,40 +164,44 @@ spec:
                       name: app
                       port:
                         number: 80
+            tls:
+            - secretName: app-tls
+              hosts:
+              - example.com
         patches:
-        - type: FromCompositeFieldPath
-          fromFieldPath: metadata.name
-          toFieldPath: metadata.name
         - type: FromCompositeFieldPath
           fromFieldPath: metadata.name
           toFieldPath: metadata.labels[nest.crossplane.io/app]
         - type: FromCompositeFieldPath
+          fromFieldPath: metadata.name
+          toFieldPath: metadata.generateName
+        - type: FromCompositeFieldPath
+          fromFieldPath: spec.clusterIssuer
+          toFieldPath: metadata.annotations[cert-manager.io/cluster-issuer]
+        - type: FromCompositeFieldPath
           fromFieldPath: spec.ingressClassName
           toFieldPath: spec.ingressClassName
+        - type: FromCompositeFieldPath
+          fromFieldPath: spec.host
+          toFieldPath: spec.rules[0].host
         - type: FromCompositeFieldPath
           fromFieldPath: metadata.name
           toFieldPath: spec.rules[0].http.paths[0].backend.service.name
         - type: FromCompositeFieldPath
           fromFieldPath: spec.port
           toFieldPath: spec.rules[0].http.paths[0].backend.service.port.number
-        # Default TLS secret name derived from app name, overridable by spec.tlsSecretName
-        - type: FromCompositeFieldPath
-          fromFieldPath: metadata.name
-          toFieldPath: spec.tls[0].secretName
-          transforms:
-          - type: string
+        - type: CombineFromComposite
+          combine:
+            variables:
+            - fromFieldPath: metadata.name
+            strategy: string
             string:
-              type: Format
               fmt: "%s-tls"
-        - type: FromCompositeFieldPath
-          fromFieldPath: spec.host
-          toFieldPath: spec.rules[0].host
+          toFieldPath: spec.tls[0].secretName
         - type: FromCompositeFieldPath
           fromFieldPath: spec.host
           toFieldPath: spec.tls[0].hosts[0]
-        - type: FromCompositeFieldPath
-          fromFieldPath: spec.tlsSecretName
-          toFieldPath: spec.tls[0].secretName
-        - type: FromCompositeFieldPath
-          fromFieldPath: spec.clusterIssuer
-          toFieldPath: metadata.annotations[cert-manager.io/cluster-issuer]
+        readinessChecks:
+        - type: NonEmpty
+          fieldPath: status.loadBalancer.ingress[0].ip
+  # Removed previous optional-ingress step; consolidated into the conditional step below.
