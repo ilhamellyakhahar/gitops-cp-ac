@@ -9,5 +9,8 @@ spec:
   minReplicas: 1
   maxReplicas: 5
   utilization: 60
-  # enableIngress: true
-  # host: appslab.test.nawnest.my.id
+  enableIngress: true
+  compositionSelector:
+    matchLabels:
+      ingress: "true"
+  host: appslab.test.nawnest.my.id
