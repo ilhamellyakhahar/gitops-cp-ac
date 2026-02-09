@@ -31,6 +31,16 @@ spec:
             image:
               description: The app's OCI container image.
               type: string
+            command:
+              description: Optional command to override the container's entrypoint.
+              type: array
+              items:
+                type: string
+            args:
+              description: Optional arguments to pass to the container command.
+              type: array
+              items:
+                type: string
             port:
               description: The port the app listens on.
               type: integer

@@ -1,7 +1,7 @@
 apiVersion: apiextensions.crossplane.io/v1
 kind: Composition
 metadata:
-  name: withIngress
+  name: with-ingress
   labels:
     ingress: "true"
 spec:
@@ -54,6 +54,16 @@ spec:
         - type: FromCompositeFieldPath
           fromFieldPath: spec.image
           toFieldPath: spec.template.spec.containers[0].image
+        - type: FromCompositeFieldPath
+          fromFieldPath: spec.command
+          toFieldPath: spec.template.spec.containers[0].command
+          policy:
+            fromFieldPath: Optional
+        - type: FromCompositeFieldPath
+          fromFieldPath: spec.args
+          toFieldPath: spec.template.spec.containers[0].args
+          policy:
+            fromFieldPath: Optional
         - type: FromCompositeFieldPath
           fromFieldPath: spec.port
           toFieldPath: spec.template.spec.containers[0].ports[0].containerPort

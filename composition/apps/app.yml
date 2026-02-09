@@ -5,6 +5,8 @@ metadata:
   namespace: apps-lab
 spec:
   image: nginx
+  # command: ["/bin/sh"]
+  # args: ["-c", "echo hello"]
   port: 80
   minReplicas: 1
   maxReplicas: 5
