@@ -109,6 +109,11 @@ spec:
             string:
               type: Format
               fmt: "%s-env"
+        - type: FromCompositeFieldPath
+          fromFieldPath: spec.envFile
+          toFieldPath: spec.template.metadata.annotations[nest.crossplane.io/env-checksum]
+          policy:
+            fromFieldPath: Optional
         readinessChecks:
         - type: MatchCondition
           matchCondition:
