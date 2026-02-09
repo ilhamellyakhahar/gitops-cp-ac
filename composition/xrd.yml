@@ -20,12 +20,6 @@ spec:
         spec:
           type: object
           properties:
-            compositionRef:
-              description: Select a specific Composition by name.
-              type: object
-              properties:
-                name:
-                  type: string
             compositionSelector:
               description: Select a Composition by matching its labels.
               type: object
@@ -56,9 +50,6 @@ spec:
             host:
               description: Optional hostname for Ingress routing.
               type: string
-            tlsSecretName:
-              description: Secret name to store TLS certificate issued by cert-manager.
-              type: string
             clusterIssuer:
               description: cert-manager ClusterIssuer name to use for certificate issuance.
               type: string
@@ -70,6 +61,9 @@ spec:
           required:
           - image
           - port
+          - minReplicas
+          - maxReplicas
+          - utilization
         status:
           type: object
           properties:

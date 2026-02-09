@@ -1,7 +1,7 @@
 apiVersion: nest.crossplane.io/v1
 kind: App
 metadata:
-  name: my-app
+  name: firstapp
   namespace: apps-lab
 spec:
   image: nginx
@@ -11,5 +11,5 @@ spec:
   utilization: 60
   compositionSelector:
     matchLabels:
-      ingress: "false"
-  # host: appslab.test.nawnest.my.id
+      ingress: "true"
+  host: appslab.test.nawnest.my.id

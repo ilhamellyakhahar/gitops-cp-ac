@@ -1,11 +1,9 @@
 apiVersion: apiextensions.crossplane.io/v1
 kind: Composition
 metadata:
-  name: app-yaml
+  name: withIngress
   labels:
     ingress: "true"
-    xr: "app"
-    variant: "with-ingress"
 spec:
   compositeTypeRef:
     apiVersion: nest.crossplane.io/v1
@@ -59,9 +57,6 @@ spec:
         - type: FromCompositeFieldPath
           fromFieldPath: spec.port
           toFieldPath: spec.template.spec.containers[0].ports[0].containerPort
-        - type: ToCompositeFieldPath
-          fromFieldPath: status.availableReplicas
-          toFieldPath: status.replicas
         readinessChecks:
         - type: MatchCondition
           matchCondition:
