@@ -1,18 +1,18 @@
 apiVersion: apiextensions.crossplane.io/v1
 kind: Composition
 metadata:
-  name: app-yaml
+  name: app-yaml-no-ingress
   labels:
-    ingress: "true"
+    ingress: "false"
     xr: "app"
-    variant: "with-ingress"
+    variant: "no-ingress"
 spec:
   compositeTypeRef:
     apiVersion: nest.crossplane.io/v1
     kind: App
   mode: Pipeline
   pipeline:
-  - step: create-deployment-service-hpa-ingress
+  - step: create-deployment-service-hpa
     functionRef:
       name: crossplane-contrib-function-patch-and-transform
     input:
@@ -147,65 +147,3 @@ spec:
           matchCondition:
             type: AbleToScale
             status: "True"
-      - name: ingress
-        base:
-          apiVersion: networking.k8s.io/v1
-          kind: Ingress
-          metadata:
-            annotations:
-              nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-              nginx.ingress.kubernetes.io/ssl-passthrough: "true"
-              cert-manager.io/cluster-issuer: letsencrypt-development
-          spec:
-            ingressClassName: nginx
-            rules:
-            - host: example.com
-              http:
-                paths:
-                - path: "/"
-                  pathType: Prefix
-                  backend:
-                    service:
-                      name: app
-                      port:
-                        number: 80
-            tls:
-            - secretName: app-tls
-              hosts:
-              - example.com
-        patches:
-        - type: FromCompositeFieldPath
-          fromFieldPath: metadata.name
-          toFieldPath: metadata.labels[nest.crossplane.io/app]
-        - type: FromCompositeFieldPath
-          fromFieldPath: metadata.name
-          toFieldPath: metadata.generateName
-        - type: FromCompositeFieldPath
-          fromFieldPath: spec.clusterIssuer
-          toFieldPath: metadata.annotations[cert-manager.io/cluster-issuer]
-        - type: FromCompositeFieldPath
-          fromFieldPath: spec.ingressClassName
-          toFieldPath: spec.ingressClassName
-        - type: FromCompositeFieldPath
-          fromFieldPath: spec.host
-          toFieldPath: spec.rules[0].host
-        - type: FromCompositeFieldPath
-          fromFieldPath: metadata.name
-          toFieldPath: spec.rules[0].http.paths[0].backend.service.name
-        - type: FromCompositeFieldPath
-          fromFieldPath: spec.port
-          toFieldPath: spec.rules[0].http.paths[0].backend.service.port.number
-        - type: CombineFromComposite
-          combine:
-            variables:
-            - fromFieldPath: metadata.name
-            strategy: string
-            string:
-              fmt: "%s-tls"
-          toFieldPath: spec.tls[0].secretName
-        - type: FromCompositeFieldPath
-          fromFieldPath: spec.host
-          toFieldPath: spec.tls[0].hosts[0]
-        readinessChecks:
-        - type: NonEmpty
-          fieldPath: status.loadBalancer.ingress[0].ip

@@ -8,6 +8,7 @@ spec:
   names:
     kind: App
     plural: apps
+  defaultCompositionUpdatePolicy: Manual
   versions:
   - name: v1
     served: true
@@ -19,6 +20,20 @@ spec:
         spec:
           type: object
           properties:
+            compositionRef:
+              description: Select a specific Composition by name.
+              type: object
+              properties:
+                name:
+                  type: string
+            compositionSelector:
+              description: Select a Composition by matching its labels.
+              type: object
+              properties:
+                matchLabels:
+                  type: object
+                  additionalProperties:
+                    type: string
             image:
               description: The app's OCI container image.
               type: string
@@ -52,10 +67,6 @@ spec:
               description: Optional Ingress class name (e.g., nginx).
               type: string
               default: nginx
-            enableIngress:
-              description: Enable composing an Ingress resource.
-              type: boolean
-              default: false
           required:
           - image
           - port

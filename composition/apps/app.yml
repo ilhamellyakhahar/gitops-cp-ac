@@ -4,11 +4,12 @@ metadata:
   name: my-app
   namespace: apps-lab
 spec:
-  compositionRef:
-    name: app-yaml-no-ingress
   image: nginx
   port: 80
   minReplicas: 1
   maxReplicas: 5
   utilization: 60
+  compositionSelector:
+    matchLabels:
+      ingress: "false"
   # host: appslab.test.nawnest.my.id
