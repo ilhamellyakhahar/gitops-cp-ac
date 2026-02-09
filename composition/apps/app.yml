@@ -12,4 +12,4 @@ spec:
   compositionSelector:
     matchLabels:
       ingress: "false"
-  host: appslab.test.nawnest.my.id
+  # host: appslab.test.nawnest.my.id
