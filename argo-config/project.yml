@@ -3,3 +3,8 @@ kind: AppProject
 metadata:
   name: lab
   namespace: argocd
+spec:
+  destinations:
+  - name: aks-nest-cluster
+    namespace: apps-lab
+    server: https://nest-cluster-ak0v0b54.hcp.indonesiacentral.azmk8s.io:443
