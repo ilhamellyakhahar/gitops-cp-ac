@@ -11,5 +11,5 @@ spec:
   utilization: 60
   compositionSelector:
     matchLabels:
-      ingress: "false"
-  # host: appslab.test.nawnest.my.id
+      ingress: "true"
+  host: appslab.test.nawnest.my.id
