@@ -1,12 +1,12 @@
-apiVersion: aws.m.upbound.io/v1beta1
-kind: ClusterProviderConfig
+apiVersion: azure.m.upbound.io/v1beta1
+kind: ProviderConfig
 metadata:
-  name: aws
-  namespace: upbound-system
+  name: azure-dns
+  namespace: crossplane-system
 spec:
   credentials:
-    source: Secret
     secretRef:
-      namespace: crossplane-system
-      name: aws-secret
       key: creds
+      name: azure-crossplane-secret
+      namespace: crossplane-system
+    source: Secret

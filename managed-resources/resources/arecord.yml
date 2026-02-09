@@ -1,0 +1,15 @@
+apiVersion: network.azure.m.upbound.io/v1beta1
+kind: DNSARecord
+metadata:
+  name: example
+  namespace: crossplane-system
+spec:
+  forProvider:
+    records:
+      - 48.193.8.105
+    resourceGroupName: rg-dns-zone
+    ttl: 3600
+    zoneName: nawnest.my.id
+  providerConfigRef:
+    kind: ProviderConfig
+    name: azure-dns
