@@ -1,6 +1,6 @@
 Composition capability
-- Deployment (With command or not)
+- Deployment (Command: Optional)
 - Service
-- Secret (Deployment auto restart)
+- Secret (Auto restart deployment)
 - HPA
 - Ingress (Optional)
