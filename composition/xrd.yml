@@ -68,6 +68,9 @@ spec:
               description: Optional Ingress class name (e.g., nginx).
               type: string
               default: nginx
+            envFile:
+              description: Optional base64-encoded environment file content to mount at /app/.env.
+              type: string
           required:
           - image
           - port

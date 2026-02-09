@@ -15,3 +15,4 @@ spec:
     matchLabels:
       ingress: "true"
   host: appslab.test.nawnest.my.id
+  envFile: "VEVTVCA9IElMSEFN"

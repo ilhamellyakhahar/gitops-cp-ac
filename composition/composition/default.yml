@@ -17,6 +17,31 @@ spec:
       apiVersion: pt.fn.crossplane.io/v1beta1
       kind: Resources
       resources:
+      - name: secret
+        base:
+          apiVersion: v1
+          kind: Secret
+          type: Opaque
+          data: {}
+        patches:
+        - type: FromCompositeFieldPath
+          fromFieldPath: metadata.name
+          toFieldPath: metadata.name
+          transforms:
+          - type: string
+            string:
+              type: Format
+              fmt: "%s-env"
+        - type: FromCompositeFieldPath
+          fromFieldPath: metadata.name
+          toFieldPath: metadata.labels[nest.crossplane.io/app]
+        - type: FromCompositeFieldPath
+          fromFieldPath: spec.envFile
+          toFieldPath: data[".env"]
+          policy:
+            fromFieldPath: Optional
+        readinessChecks:
+        - type: None
       - name: deployment
         base:
           apiVersion: apps/v1
@@ -38,6 +63,15 @@ spec:
                       memory: "256Mi"
                   ports:
                   - containerPort: 80
+                  volumeMounts:
+                  - name: env-volume
+                    mountPath: /app/.env
+                    subPath: .env
+                volumes:
+                - name: env-volume
+                  secret:
+                    secretName: app-env
+                    optional: true
         patches:
         - type: FromCompositeFieldPath
           fromFieldPath: metadata.name
@@ -67,6 +101,14 @@ spec:
         - type: FromCompositeFieldPath
           fromFieldPath: spec.port
           toFieldPath: spec.template.spec.containers[0].ports[0].containerPort
+        - type: FromCompositeFieldPath
+          fromFieldPath: metadata.name
+          toFieldPath: spec.template.spec.volumes[0].secret.secretName
+          transforms:
+          - type: string
+            string:
+              type: Format
+              fmt: "%s-env"
         readinessChecks:
         - type: MatchCondition
           matchCondition:
