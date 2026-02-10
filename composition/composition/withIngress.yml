@@ -258,6 +258,45 @@ spec:
         - type: FromCompositeFieldPath
           fromFieldPath: spec.host
           toFieldPath: spec.tls[0].hosts[0]
+        - type: ToCompositeFieldPath
+          fromFieldPath: status.loadBalancer.ingress[0].ip
+          toFieldPath: status.ingressIP
         readinessChecks:
         - type: NonEmpty
           fieldPath: status.loadBalancer.ingress[0].ip
+      - name: dnsrecord
+        base:
+          apiVersion: network.azure.m.upbound.io/v1beta1
+          kind: DNSARecord
+          spec:
+            forProvider:
+              records: []
+              resourceGroupName: rg-dns-zone
+              ttl: 3600
+              zoneName: nawnest.my.id
+            providerConfigRef:
+              kind: ProviderConfig
+              name: azure-dns
+        patches:
+        - type: FromCompositeFieldPath
+          fromFieldPath: metadata.name
+          toFieldPath: metadata.labels[nest.crossplane.io/app]
+        - type: FromCompositeFieldPath
+          fromFieldPath: spec.host
+          toFieldPath: metadata.name
+          transforms:
+          - type: string
+            string:
+              type: Regexp
+              regexp:
+                match: '(.+)\.nawnest\.my\.id$'
+                group: 1
+          - type: string
+            string:
+              type: Convert
+              convert: ToLower
+        - type: FromCompositeFieldPath
+          fromFieldPath: status.ingressIP
+          toFieldPath: spec.forProvider.records[0]
+        readinessChecks:
+        - type: None

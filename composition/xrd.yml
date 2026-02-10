@@ -86,3 +86,6 @@ spec:
             address:
               description: The app's IP address.
               type: string
+            ingressIP:
+              description: The ingress load balancer IP address.
+              type: string

@@ -2,7 +2,7 @@ apiVersion: nest.crossplane.io/v1
 kind: App
 metadata:
   name: firstapp
-  namespace: apps-lab
+  namespace: crossplane-system
 spec:
   image: nginx
   # command: ["/bin/sh"]
@@ -14,5 +14,5 @@ spec:
   compositionSelector:
     matchLabels:
       ingress: "true"
-  host: appslab.test.nawnest.my.id
+  host: ilham.test.nawnest.my.id
   envFile: "VEVTVCA9IElMSEFN"
