@@ -2,11 +2,11 @@ apiVersion: azure.m.upbound.io/v1beta1
 kind: ProviderConfig
 metadata:
   name: azure-dns
-  namespace: crossplane-system
+  namespace: apps-lab
 spec:
   credentials:
     secretRef:
       key: creds
-      name: azure-crossplane-secret
-      namespace: crossplane-system
+      name: azure-secret
+      namespace: apps-lab
     source: Secret

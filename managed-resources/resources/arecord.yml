@@ -2,7 +2,7 @@ apiVersion: network.azure.m.upbound.io/v1beta1
 kind: DNSARecord
 metadata:
   name: example
-  namespace: crossplane-system
+  namespace: apps-lab
 spec:
   forProvider:
     records:
