@@ -5,14 +5,14 @@ metadata:
   namespace: apps-lab
 spec:
   image: nginx
-  # command: ["/bin/sh"]
-  # args: ["-c", "echo hello"]
+  command: ["/bin/sh"]
+  args: ["-c", "echo hello"]
+  envFile: "VEVTVCA9IElMSEFN"
   port: 80
   minReplicas: 1
   maxReplicas: 5
   utilization: 60
   compositionSelector:
     matchLabels:
-      ingress: "true"
+      ingress: "true" # if no need ingress, update to "false"
   host: ilham.test.dua.nawnest.my.id
-  envFile: "VEVTVCA9IElMSEFN"
