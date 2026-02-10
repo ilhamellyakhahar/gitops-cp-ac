@@ -9,10 +9,18 @@ spec:
   args: ["-c", "echo hello"]
   envFile: "VEVTVCA9IElMSEFN"
   port: 80
+  # default is 1
   minReplicas: 1
+  # default is 3
   maxReplicas: 5
-  utilization: 60
+  # default is 60
+  utilization: 70
   compositionSelector:
     matchLabels:
-      ingress: "true" # if no need ingress, update to "false"
+      # if no need ingress, update to "false"
+      ingress: "true" 
   host: ilham.test.dua.nawnest.my.id
+  # default is nginx
+  ingressClassName: nginx-new
+  # default is letsencrypt-development
+  clusterIssuer: letsencrypt-prod
