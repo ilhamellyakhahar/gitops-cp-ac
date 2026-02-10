@@ -4,10 +4,14 @@ metadata:
   name: firstapp
   namespace: apps-lab
 spec:
+  # required
   image: nginx
+  # optional
   command: ["/bin/sh"]
   args: ["-c", "echo hello"]
+  # optional
   envFile: "VEVTVCA9IElMSEFN"
+  # required
   port: 80
   # default is 1
   minReplicas: 1
