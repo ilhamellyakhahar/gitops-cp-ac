@@ -19,6 +19,7 @@ spec:
   maxReplicas: 5
   # default is 60
   utilization: 70
+  # required
   compositionSelector:
     matchLabels:
       # if no need ingress, update to "false"
