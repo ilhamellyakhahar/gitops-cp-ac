@@ -119,34 +119,6 @@ spec:
           matchCondition:
             type: Available
             status: "True"
-      - name: service
-        base:
-          apiVersion: v1
-          kind: Service
-          spec:
-            ports:
-            - protocol: TCP
-              port: 80
-              targetPort: 80
-        patches:
-        - type: FromCompositeFieldPath
-          fromFieldPath: metadata.name
-          toFieldPath: metadata.name
-        - type: FromCompositeFieldPath
-          fromFieldPath: metadata.name
-          toFieldPath: metadata.labels[nest.crossplane.io/app]
-        - type: FromCompositeFieldPath
-          fromFieldPath: metadata.name
-          toFieldPath: spec.selector[nest.crossplane.io/app]
-        - type: FromCompositeFieldPath
-          fromFieldPath: spec.port
-          toFieldPath: spec.ports[0].port
-        - type: ToCompositeFieldPath
-          fromFieldPath: spec.clusterIP
-          toFieldPath: status.address
-        readinessChecks:
-        - type: NonEmpty
-          fieldPath: spec.clusterIP
       - name: hpa
         base:
           apiVersion: autoscaling/v2
